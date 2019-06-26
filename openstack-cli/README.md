@@ -1,24 +1,59 @@
-Openstack documentation
+# Openstack-cli documentation
 
 Here is the documentation on openstack-cli image docker usage.
+It's a container to use openstack-cli. It also contains nano and GIT.
+
+### Table of content
+
+1. [Run with environment variables.](#environment)
+2. [Run with volume file.](#volume)
+3. [Command options.](#option)
 
 To be logged on your openstack account, you have multiple ways.
 
-You can do a source file with your environment variables.
+# Run with environment variables. <a name="environment"></a>
 
-You can use -v to choose the storage volume of the container.
+## First option
+Use the -e option with the file who contains your environment variables.
 
-You can charge the container with the -e option to show the environment variables or the charge your own one.
+```bash
+docker run -it -e openrc.sh openstack-cli /bin/bash
+```
 
-Use -e and a file who containt your varibles, or use --env to enter manualy your variables.
+Replace 'openrc.sh' by your environment variables file.
 
-As exemple:
+## Second option
 
-docker run -it -v asforgecom/openstack-cli -e openrc.sh openstack-cli /bin/bash 
+Use the --env option for each variable.
 
-or 
+```bash
+docker run -it
+--env OS_USERNAME=
+--env OS--PASSWORD=
+--env OS_PROJECT_ID=
+--env OS_PROJECT_NAME=
+--env OS_USER_DOMAIN_NAME=
+--env OS_PROJECT_DOMAIN_ID=
+--env OS_REGION_NAME=
+--env OS_INTERFACE=
+--env OS_IDENTITY_API_VERSION=
+openstack-cli /bin/bash
+```
 
-docker run -it -v asforgecom/openstack-cli --env Var1=value1 --env VAR2=value2 openstack-cli /bin/bash
+# Run with volume file. <a name="volume"></a>
 
-You have to charge the container in /bin/bash mode to interact with it.
+You can use the -v option to choose the container storage volume.
+
+```bash
+docker run -it -v /workdir:openrc.sh openstack-cli /bin/bash 
+```
+
+You can change '/workdir' by your workspace in the container.
+Replace 'openrc.sh' by your environment variables file.
+
+# Command options. <a name="option"></a>
+
+The --it option alows you to enter in the container.
+openstack-cli is the image name.
+/bin/bash allows you to have a shell. 
 
