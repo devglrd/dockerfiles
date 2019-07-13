@@ -1,12 +1,9 @@
 FROM python:3.6
 
-MAINTAINER "Gregoire MAHE <greg@asforge.com>"
+RUN apt-get update && apt-get install --no-install-recommends --assume-yes nano=2.7.4-1 \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update
+RUN pip3 install python-openstackclient==3.19.0 python-designateclient==2.11.0
 
-RUN apt-get install git && apt-get install nano
-
-RUN pip3 install python-openstackclient python-designateclient
-
-CMD openstack
-
+CMD ["openstack"]
