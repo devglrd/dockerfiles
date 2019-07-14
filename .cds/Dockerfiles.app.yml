@@ -1,0 +1,6 @@
+version: v1.0
+name: Dockerfiles
+vcs_server: github
+repo: asforge-com/dockerfiles
+vcs_connection_type: ssh
+vcs_ssh_key: proj-ssh-asforge
