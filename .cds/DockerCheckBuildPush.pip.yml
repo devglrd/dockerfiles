@@ -1,0 +1,33 @@
+version: v1.0
+name: DockerCheckBuildPush
+parameters:
+  docker-image-name:
+    type: string
+  docker-tags:
+    type: string
+    default: '{{.cds.version}},latest'
+  dockerfile-folder:
+    type: string
+jobs:
+- job: CheckBuildPush
+  steps:
+  - checkout: '{{.cds.workspace}}'
+  - name: cd to dockerfile-folder
+    script:
+    - cd {{.cds.pip.dockerfile-folder}}
+  - DockerfileCheck:
+      dockerfile-path: '{{.cds.pip.dockerfile-folder}}/Dockerfile'
+  - DockerBuild:
+      image-name: '{{.cds.env.docker-url}}/{{.cds.pip.docker-image-name}}'
+      path: '{{.cds.pip.dockerfile-folder}}'
+      tag: '{{.cds.pip.docker-tags}}'
+  - DockerPush:
+      docker-registry-url: '{{.cds.env.docker-url}}'
+      image-name: '{{.cds.env.docker-url}}/{{.cds.pip.docker-image-name}}'
+      password: '{{.cds.env.docker-password}}'
+      tag: '{{.cds.pip.docker-tags}}'
+      username: '{{.cds.env.docker-username}}'
+  requirements:
+  - binary: docker
+  - binary: git
+  - binary: hadolint

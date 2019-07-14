@@ -1,0 +1,53 @@
+name: dockerfiles-pub
+version: v1.0
+workflow:
+  Fork:
+    conditions:
+      check:
+      - variable: git.branch
+        operator: eq
+        value: release/v0.1.0
+    pipeline: Fork
+    application: Dockerfiles
+    payload:
+      git.author: ""
+      git.branch: master
+      git.hash: ""
+      git.hash.before: ""
+      git.message: ""
+      git.repository: asforge-com/dockerfiles
+      git.tag: ""
+  fork:
+    depends_on:
+    - Fork
+  kubectl:
+    depends_on:
+    - fork
+    when:
+    - success
+    pipeline: DockerCheckBuildPush
+    application: Dockerfiles
+    environment: dockerhub
+    parameters:
+      docker-image-name: asforge/kubectl
+      docker-tags: latest
+      dockerfile-folder: kubectl
+  openstack-cli:
+    depends_on:
+    - fork
+    when:
+    - success
+    pipeline: DockerCheckBuildPush
+    application: Dockerfiles
+    environment: dockerhub
+    parameters:
+      docker-image-name: asforge/openstack-cli
+      docker-tags: latest
+      dockerfile-folder: openstack-cli
+hooks:
+  Fork:
+  - type: RepositoryWebHook
+    ref: "1563092644"
+metadata:
+  default_tags: git.branch,git.author
+
