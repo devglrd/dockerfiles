@@ -31,5 +31,5 @@ docker run -it \
 You can use the -v option to bind the openrc.sh file locally to your container.
 
 ```bash
-docker run -it -v ${PWD}/openrc.sh:/openrc.sh asforge/os bash -c "source /openrc.sh; bash"
+docker run -it -v ${PWD}/openrc.sh:/openrc.sh asforge/openstack-cli bash -c "source /openrc.sh; bash"
 ```
